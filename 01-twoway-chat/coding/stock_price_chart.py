@@ -1,0 +1,30 @@
+# filename: stock_price_chart.py
+import pandas as pd
+import matplotlib.pyplot as plt
+import requests
+
+# Function to fetch stock price data from Alpha Vantage API
+def fetch_stock_data(symbol):
+    api_key = 'YOUR_API_KEY'
+    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}'
+    response = requests.get(url)
+    data = response.json()['Time Series (Daily)']
+    df = pd.DataFrame(data).T
+    df.index = pd.to_datetime(df.index)
+    df['4. close'] = pd.to_numeric(df['4. close'])
+    return df
+
+# Get stock price data for META and TESLA
+meta_data = fetch_stock_data('META')
+tesla_data = fetch_stock_data('TSLA')
+
+# Plot the stock price change over time
+plt.figure(figsize=(12, 6))
+plt.plot(meta_data.index, meta_data['4. close'], label='META')
+plt.plot(tesla_data.index, tesla_data['4. close'], label='TESLA')
+plt.title('META vs TESLA Stock Price Change')
+plt.xlabel('Date')
+plt.ylabel('Stock Price (USD)')
+plt.legend()
+plt.grid(True)
+plt.show()
