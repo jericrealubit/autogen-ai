@@ -9,7 +9,7 @@ config_list = autogen.config_list_from_dotenv(
 )
 
 llm_config = {
-    "cache_seed": 43,  # change the cache_seed for different trials
+    "cache_seed": 44,  # change the cache_seed for different trials
     "temperature": 0,
     "config_list": config_list,
     "timeout": 120,  # in seconds
